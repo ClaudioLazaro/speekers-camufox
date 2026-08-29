@@ -370,6 +370,19 @@ def worker(wid: int, cfg: dict, votante: dict, proxy_url, quota: int, intervalo:
         log(f"worker encerrado com {feitos} voto(s) confirmado(s).", wid)
 
 
+def checar_dependencias() -> None:
+    """Falha rapido com instrucao clara se faltar algo do ambiente."""
+    import shutil
+    if not shutil.which("Xvfb"):
+        sys.exit(
+            "ERRO: Xvfb nao encontrado (necessario para os navegadores headless).\n"
+            "Instale:\n"
+            "  Debian/Ubuntu: sudo apt install -y xvfb\n"
+            "  Arch:          sudo pacman -S --needed xorg-server-xvfb\n"
+            "  Alpine:        apk add xvfb"
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--votos", type=int, default=None,
@@ -383,6 +396,7 @@ def main() -> None:
                         help="segundos entre tentativas SOMANDO todos os navegadores")
     args = parser.parse_args()
 
+    checar_dependencias()
     cfg = carregar_config()
     votantes = cfg["votantes"]
     total = 1 if args.once else (args.votos if args.votos is not None else int(cfg.get("votos", 10)))

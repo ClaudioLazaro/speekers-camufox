@@ -17,6 +17,8 @@ once:
 
 CONTAINER_RT ?= podman
 IMAGE = speekers-camufox
+PARALELOS ?= 6
+INTERVALO ?= 15 40
 
 container-build:
 	$(CONTAINER_RT) build -t $(IMAGE) -f Containerfile .
@@ -26,7 +28,7 @@ container-run:
 	$(CONTAINER_RT) run --rm -it \
 	  -v ./config.json:/app/config.json:ro,Z \
 	  -v ./votos.log:/app/votos.log:Z \
-	  $(IMAGE)
+	  $(IMAGE) uv run python votar.py --votos 0 --paralelo $(PARALELOS) --intervalo $(INTERVALO)
 
 container-once:
 	$(CONTAINER_RT) run --rm -it \

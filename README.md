@@ -77,18 +77,16 @@ tudo. A imagem é Ubuntu 24.04 multi-arch (funciona em x86_64 e aarch64).
 
 ```bash
 # build (uma vez; baixa deps + Firefox do Camoufox na imagem)
-podman build -t speekers-camufox -f Containerfile .
+make container-build        # equivale a: podman build -t speekers-camufox -f Containerfile .
 
 # regime continuo — config.json e votos.log ficam no host, NUNCA na imagem
-touch votos.log   # garante que o arquivo existe para o mount
-podman run --rm -it \
-  -v ./config.json:/app/config.json:ro,Z \
-  -v ./votos.log:/app/votos.log:Z \
-  speekers-camufox
+make container-run
 
-# outros modos: sobrescreva o CMD
-podman run --rm -it -v ./config.json:/app/config.json:ro,Z \
-  speekers-camufox uv run python votar.py --once
+# 1 voto de teste
+make container-once
+
+# com docker em vez de podman:
+make CONTAINER_RT=docker container-build container-run
 ```
 
 Notas: no Rocky/RHEL o `:Z` nos volumes é obrigatório por causa do SELinux.

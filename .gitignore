@@ -1,0 +1,14 @@
+# ambiente python
+.venv/
+__pycache__/
+*.pyc
+
+# dados pessoais — NUNCA versionar (use config.example.json como base)
+config.json
+
+# artefatos de execucao
+votos.log
+debug_*.png
+recon.png
+page.html
+jschunks/

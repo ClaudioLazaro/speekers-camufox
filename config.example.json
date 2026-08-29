@@ -1,0 +1,17 @@
+{
+  "url": "https://speaker.thebestspeaker.com.br/vote/SEU-PALESTRANTE-AQUI",
+  "votos": 10,
+  "intervalo_segundos": [15, 40],
+  "intervalo_global_segundos": [20, 35],
+  "proxies": [],
+  "votantes": [
+    {
+      "email": "pessoa1@exemplo.com",
+      "telefone": "11999990001"
+    },
+    {
+      "email": "pessoa2@exemplo.com",
+      "telefone": "11999990002"
+    }
+  ]
+}

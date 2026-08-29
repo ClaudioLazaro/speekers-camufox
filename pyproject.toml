@@ -1,0 +1,9 @@
+[project]
+name = "thebestspeaker-votacao"
+version = "0.1.0"
+description = "Automacao de voto torcedor (ilimitado) do TheBestSpeaker com Camoufox"
+requires-python = ">=3.12"
+dependencies = [
+    "camoufox[geoip]",
+    "playwright",
+]

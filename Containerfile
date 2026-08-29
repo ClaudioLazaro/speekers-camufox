@@ -26,7 +26,9 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync \
  && uv run playwright install-deps firefox \
- && uv run camoufox fetch
+ && (uv run camoufox fetch || (sleep 10 && uv run camoufox fetch)) \
+ && test -n "$(find /root/.cache/camoufox/browsers -type f | head -1)" \
+ && echo "Camoufox browser OK na imagem"
 
 COPY votar.py ./
 

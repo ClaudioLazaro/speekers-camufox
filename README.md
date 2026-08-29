@@ -70,6 +70,30 @@ Estratégia anti-bloqueio (descoberta empiricamente — o 403/429 do site é por
 Logs: tudo vai para o terminal e para `votos.log` (gitignored). Erros salvam
 screenshots `debug_*.png` (gitignored).
 
+## Rodando em container (podman/docker)
+
+Recomendado para hosts com glibc antiga (Rocky/RHEL 8), ARM64, ou para isolar
+tudo. A imagem é Ubuntu 24.04 multi-arch (funciona em x86_64 e aarch64).
+
+```bash
+# build (uma vez; baixa deps + Firefox do Camoufox na imagem)
+podman build -t speekers-camufox -f Containerfile .
+
+# regime continuo — config.json e votos.log ficam no host, NUNCA na imagem
+touch votos.log   # garante que o arquivo existe para o mount
+podman run --rm -it \
+  -v ./config.json:/app/config.json:ro,Z \
+  -v ./votos.log:/app/votos.log:Z \
+  speekers-camufox
+
+# outros modos: sobrescreva o CMD
+podman run --rm -it -v ./config.json:/app/config.json:ro,Z \
+  speekers-camufox uv run python votar.py --once
+```
+
+Notas: no Rocky/RHEL o `:Z` nos volumes é obrigatório por causa do SELinux.
+Com docker no lugar de podman os comandos são idênticos (`:Z` é aceito também).
+
 ## Proxies (opcional)
 
 Lista `"proxies"` no config, distribuída em rodízio entre os navegadores:
